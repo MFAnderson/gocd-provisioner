@@ -1,3 +1,4 @@
 ---
 - name: echo hello
-  command: echo hello
+  debug:
+    msg: "hello"

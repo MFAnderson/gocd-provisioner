@@ -15,24 +15,25 @@ function helptext {
 function doctor {
     echo "Checking Dependencies for Usage"
     echo "--------"
-    hash ansible-playbook 2>/dev/null || { echo >&2 "ansible-playbook doesn't appear to be installed" }
-    hash python 2>/dev/null || { echo >&2 "python doesn't appear to be installed" }
+    hash ansible-playbook 2>/dev/null || echo "ansible-playbook doesn't appear to be installed" 
+    hash python 2>/dev/null || echo "python doesn't appear to be installed" 
     echo ""
     echo "Checking Development Dependencies"
     echo "--------"
-    hash vagrant 2>/dev/null || { echo >&2 "vagrant doesn't appear to be installed" }
-    hash ruby 2>/dev/null || { echo >&2 "ruby doesn't appear to be installed" }
-    hash pip 2>/dev/null || { echo >&2 "pip doesn't appear to be installed" }
+    hash vagrant 2>/dev/null || echo "vagrant doesn't appear to be installed"
+    hash ruby 2>/dev/null || echo "ruby doesn't appear to be installed"
+    hash virtualenv 2>/dev/null || echo "virtualenv doesn't appear to be installed"
 }
 
 function dependencies {
     bundle install
-    pip install ansible-lint
+    virtualenv .venv
+    source .venv/bin/activate && pip install ansible-lint
 }
 
 function test-fast {
     ansible-playbook cd-provisioner/site.yml --syntax-check #only syntax, very quick
-    
+    source .venv/bin/activate && ansible-lint cd-provisioner/site.yml
     ansible-playbook cd-provisioner/site.yml --check #doesn't execute, but has more logic
 }
 
@@ -47,6 +48,10 @@ case "$1" in
     test-fast) test-fast
     ;;
     test) _test
+    ;;
+    doctor) doctor
+    ;;
+    deps) dependencies
     ;;
     *) helptext
     ;;
