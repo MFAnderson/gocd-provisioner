@@ -1,4 +1,7 @@
 #!/bin/bash
+RED=$(tput setaf 1)
+YELLOW=$(tput setaf 3)
+NC=$(tput sgr0)
 
 set -e
 cd $(dirname $0)
@@ -7,22 +10,24 @@ function helptext {
     echo "Usage: ./go <command>"
     echo ""
     echo "available commands are:"
-    echo "  test        Run all tests"
-    echo "  test-fast   Run only the quick tests"
-    echo "  help        Display this help message"
+    echo "  ${YELLOW}test${NC}        Run all tests"
+    echo "  ${YELLOW}test-fast${NC}   Run only the quick tests"
+    echo "  ${YELLOW}doctor${NC}      Check for potential issues"
+    echo "  ${YELLOW}deps${NC}        Install development dependencies"
+    echo "  ${YELLOW}help${NC}        Display this help message"
 }
 
 function doctor {
     echo "Checking Dependencies for Usage"
     echo "--------"
-    hash ansible-playbook 2>/dev/null || echo "ansible-playbook doesn't appear to be installed" 
-    hash python 2>/dev/null || echo "python doesn't appear to be installed" 
+    hash ansible-playbook 2>/dev/null || echo "${RED}ansible-playbook doesn't appear to be installed${NC}"
+    hash python 2>/dev/null || echo "${RED}python doesn't appear to be installed${NC}"
     echo ""
     echo "Checking Development Dependencies"
     echo "--------"
-    hash vagrant 2>/dev/null || echo "vagrant doesn't appear to be installed"
-    hash ruby 2>/dev/null || echo "ruby doesn't appear to be installed"
-    hash virtualenv 2>/dev/null || echo "virtualenv doesn't appear to be installed"
+    hash vagrant 2>/dev/null || echo "${RED}vagrant doesn't appear to be installed${NC}"
+    hash ruby 2>/dev/null || echo "${RED}ruby doesn't appear to be installed${NC}"
+    hash virtualenv 2>/dev/null || echo "${RED}virtualenv doesn't appear to be installed${NC}"
 }
 
 function dependencies {
