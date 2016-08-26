@@ -19,7 +19,7 @@ Vagrant.configure("2") do |config|
   
   config.vm.provision "ansible" do |ansible|
     ansible.host_key_checking = false
-    ansible.playbook = "cd-provisioning/site.yml"
+    ansible.playbook = "cd-provisioner/site.yml"
     ansible.groups = {
       "go-server" => ["default"],
       "go-agent" => ["default"],

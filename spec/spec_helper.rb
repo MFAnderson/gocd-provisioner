@@ -1,9 +1,12 @@
 require 'serverspec'
+require 'infrataster/rspec'
 require 'net/ssh'
 require 'tempfile'
 
 set :backend, :ssh
 
+Infrataster::Server.define(:server, '127.0.0.1')
+set :disable_sudo, true
 if ENV['ASK_SUDO_PASSWORD']
   begin
     require 'highline/import'

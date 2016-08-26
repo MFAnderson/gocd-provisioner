@@ -1,0 +1,35 @@
+---
+- name: echo hello
+  debug:
+    msg: "hello"
+
+- name: Create Go group
+  group: name={{ GOCD_GROUP }}
+
+- name: Create Go user
+  user: 
+    name: '{{ GOCD_USER }}'
+    group: '{{ GOCD_GROUP }}'
+    home: /var/go
+
+- name: Create /etc/go
+  file:
+    path: /etc/go
+    state: directory
+    owner: '{{ GOCD_USER }}'
+    group: '{{ GOCD_GROUP }}'
+
+- name: Install GoCD YUM Repo
+  yum_repository:
+    name: GoCD
+    description: GoCD YUM repo
+    baseurl: 'https://download.go.cd'
+    gpgcheck: yes
+    gpgkey: 'https://download.go.cd/GOCD-GPG-KEY.asc'
+  when: ansible_pkg_mgr == 'yum'
+
+- name: Install GoCD APT Repo
+  apt_repository:
+    repo: 'deb https://download.go.cd /'
+  when: ansible_pkg_mgr == 'apt'
+

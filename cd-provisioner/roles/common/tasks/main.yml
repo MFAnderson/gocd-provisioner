@@ -2,3 +2,22 @@
 - name: echo hello
   debug:
     msg: "hello"
+
+- name: Install Python SELinux extensions
+  package: name=libselinux-python state=present
+
+- name: Install Java
+  package: name=java-1.8.0-openjdk state=present
+
+- name: determine JAVA_HOME
+  shell: readlink -f /usr/bin/java | sed "s:bin/java::"
+  register: system_java_home
+  changed_when: false
+
+- name: set JAVA_HOME fact
+  set_fact:
+     JAVA_HOME: "{{ system_java_home.stdout }}"
+
+- name: debug JAVA_HOME
+  debug:
+    msg: '{{ JAVA_HOME }}'
