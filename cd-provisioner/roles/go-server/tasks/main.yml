@@ -2,3 +2,44 @@
 - name: echo hello
   debug:
     msg: "hello"
+
+- name: create necessary server directories
+  file:
+    path: '/var/{{ item }}/go-server'
+    state: directory
+    owner: '{{ GOCD_USER }}'
+    group: '{{ GOCD_GROUP }}'
+  with_items:
+    - log
+    - lib
+    - run
+
+- name: Install Go Server
+  package: name=go-server state=present
+
+- name: Update go-server config
+  template:
+    src: go-server-defaults
+    dest: /etc/default/go-server
+    mode: 0644
+    owner: '{{ GOCD_USER }}'
+    group: '{{ GOCD_GROUP }}'
+
+- name: Configure go-server service
+  service:
+    name: go-server
+    enabled: yes
+    state: started
+
+- name: Check for firewalld
+  command: hash firewalld
+  register: firewalld
+  ignore_errors: true
+  changed_when: false
+
+- name: Add Go traffic to firewalld
+  firewalld:
+    port: 8154/tcp
+    permanent: true
+    state: enabled
+  when: firewalld|success
