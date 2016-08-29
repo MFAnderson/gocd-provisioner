@@ -1,4 +1,20 @@
 ---
-- name: say hello
-  debug:
-    msg: "hello"
+- name: Download RPM
+  get_url:
+    url: 'https://bintray.com/jfrog/artifactory-rpms/rpm'
+    dest: /etc/yum.repos.d/bintray-jfrog-artifactory-rpms.repo
+    mode: 644
+
+- name: Install Artifactory
+  package: name=jfrog-artifactory-oss state=present
+
+- name: Update Artifactory default
+  template:
+    src: artifactory-default
+    dest: /etc/opt/jfrog/artifactory/default
+    owner: artifactory
+    group: artifactory
+    mode: 0770
+
+- name: Configure artifactory service
+  service: name=artifactory state=started enabled=true

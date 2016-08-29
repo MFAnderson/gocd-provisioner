@@ -9,6 +9,7 @@ Vagrant.configure("2") do |config|
   #config.vm.box = "debian/jessie64"
 
   config.vm.network "forwarded_port", guest: 8153, host: 8153
+  config.vm.network "forwarded_port", guest: 8081, host: 8081
 
   #no dir sync needed
   config.vm.synced_folder ".", "/vagrant", disabled: true

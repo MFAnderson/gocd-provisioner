@@ -1,0 +1,12 @@
+#!/bin/sh
+
+export ARTIFACTORY_HOME=/var/opt/jfrog/artifactory
+export ARTIFACTORY_USER=artifactory
+export JAVA_HOME={{ JAVA_HOME }}
+
+export TOMCAT_HOME=/opt/jfrog/artifactory/tomcat
+export ARTIFACTORY_PID=/var/opt/jfrog/run/artifactory.pid
+
+{# TODO: figure out if I can do fun math to make heap size configurable without exposing raw options #}
+export JAVA_OPTIONS="-server -Xms512m -Xmx2g -Xss256k -XX:+UseG1GC"
+export JAVA_OPTIONS="$JAVA_OPTIONS -Djruby.compile.invokedynamic=false -Dfile.encoding=UTF8 -Dartdist=rpm"
