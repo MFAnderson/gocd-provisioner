@@ -1,0 +1,9 @@
+# {{ ansible_managed }}
+{{GOCD_AGENT_ADDITIONAL_DEFAULTS | default("") }}
+
+export GO_SERVER={{ GOCD_SERVER_HOST | default(hostvars[groups['go-server'][0]]['ansible_eth0']['ipv4']['address']) }}
+export GO_SERVER_PORT={{ GOCD_SERVER_PORT | default(8153) }}
+export JAVA_HOME={{ JAVA_HOME }}
+export AGENT_WORK_DIR=/var/lib/go-agent
+DAEMON=Y
+VNC=N

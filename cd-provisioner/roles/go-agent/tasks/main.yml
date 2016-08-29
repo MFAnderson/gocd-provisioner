@@ -1,4 +1,17 @@
 ---
-- name: echo hello
-  debug:
-    msg: "hello"
+
+- name: Install GoCD Agent
+  package: name=go-agent state=present
+  notify: restart agent
+
+- name: Set up agent defaults
+  template:
+    src: go-agent-defaults
+    dest: /etc/default/go-agent
+    mode: 0644
+    owner: '{{ GOCD_USER }}'
+    group: '{{ GOCD_GROUP }}'
+  notify: restart agent
+
+- name: Ensure GoCD agent service configured
+  service: name=go-agent state=started enabled=true
