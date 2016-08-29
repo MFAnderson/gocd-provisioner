@@ -2,22 +2,22 @@
 - hosts: all
   roles:
     - common
-  sudo: yes
+  become: yes
 
 - hosts: go-server, go-agent
   roles:
     - go-common
-  sudo: yes
+  become: yes
 
 - hosts: go-server
   roles:
     - go-server
-  sudo: yes
+  become: yes
 
 - hosts: go-agent
   roles:
     - go-agent
-  sudo: yes
+  become: yes
 
 - hosts: artifactory
   roles:

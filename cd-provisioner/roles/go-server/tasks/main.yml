@@ -1,7 +1,4 @@
 ---
-- name: echo hello
-  debug:
-    msg: "hello"
 
 - name: create necessary server directories
   file:

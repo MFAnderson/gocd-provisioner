@@ -1,13 +1,10 @@
 ---
-- name: echo hello
-  debug:
-    msg: "hello"
 
 - name: Create Go group
   group: name={{ GOCD_GROUP }}
 
 - name: Create Go user
-  user: 
+  user:
     name: '{{ GOCD_USER }}'
     group: '{{ GOCD_GROUP }}'
     home: /var/go
