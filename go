@@ -14,6 +14,7 @@ function helptext {
     echo "  ${YELLOW}test-fast${NC}   Run only the quick tests"
     echo "  ${YELLOW}doctor${NC}      Check for potential issues"
     echo "  ${YELLOW}deps${NC}        Install development dependencies"
+    echo "  ${YELLOW}ec2${NC}         Run EC2 Dynamic Inventory script"
     echo "  ${YELLOW}help${NC}        Display this help message"
 }
 
@@ -32,19 +33,25 @@ function doctor {
 
 function dependencies {
     bundle install
-    virtualenv .venv
-    source .venv/bin/activate && pip install ansible-lint
+    [ -d .venv ] || virtualenv .venv
+    source .venv/bin/activate && pip install ansible-lint boto
 }
 
 function test-fast {
+    # TODO: see if this is actually worthwhile
     ansible-playbook cd-provisioner/site.yml --syntax-check #only syntax, very quick
     source .venv/bin/activate && ansible-lint cd-provisioner/site.yml
+    # TODO: make this actually do what I expect it to
     ansible-playbook cd-provisioner/site.yml --check #doesn't execute, but has more logic
 }
 
 function _test {
     test-fast
     rake spec
+}
+
+function ec2 {
+    source .venv/bin/activate && python ec2.py
 }
 
 case "$1" in
@@ -57,6 +64,8 @@ case "$1" in
     doctor) doctor
     ;;
     deps) dependencies
+    ;;
+    ec2) ec2
     ;;
     *) helptext
     ;;

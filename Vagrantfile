@@ -23,6 +23,7 @@ Vagrant.configure("2") do |config|
     ansible.groups = {
       "go-server" => ["default"],
       "go-agent" => ["default"],
+      "tag_group_go" => ["default"],
       "artifactory" => ["default"]
     }
     ansible.verbose = ''
