@@ -23,6 +23,8 @@ function doctor {
     echo "--------"
     hash ansible-playbook 2>/dev/null || echo "${RED}ansible-playbook doesn't appear to be installed${NC}"
     hash python 2>/dev/null || echo "${RED}python doesn't appear to be installed${NC}"
+    hash terraform 2>/dev/null || echo "${RED}terraform doesn't appear to be installed${NC}"
+    [ -e ~/.aws/credentials || echo "${RED}you don't appear to have AWS credentials set up in ~/.aws/credentials${NC}"
     echo ""
     echo "Checking Development Dependencies"
     echo "--------"
