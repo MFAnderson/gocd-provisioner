@@ -1,0 +1,15 @@
+---
+
+- name: Configure storage.properties
+  template:
+    src: postgres.properties
+    dest: /etc/opt/jfrog/artifactory/storage.properties
+    owner: artifactory
+    group: artifactory
+    mode: 0664
+
+- name: Install JDBC driver
+  get_url:
+    url: "{{ POSTGRES_JDBC_DRIVER_URL }}"
+    dest: /var/opt/jfrog/artifactory/tomcat/lib/postgres.jar
+    mode: 775

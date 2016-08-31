@@ -1,0 +1,10 @@
+---
+
+ARTIFACTORY_USE_EXTERNAL_DB: false
+
+#only used if configuring an external DB
+DB_PORT: 5432
+DB_NAME: artifactory
+DB_USER: artifactory
+#DB_URL & DB_PASSWORD need to be specified, no sensible defaults
+POSTGRES_JDBC_DRIVER_URL: 'https://jdbc.postgresql.org/download/postgresql-9.4.1209.jar'

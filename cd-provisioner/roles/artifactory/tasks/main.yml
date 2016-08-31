@@ -1,4 +1,8 @@
 ---
+- name: quick fail if unable to configure DB
+  fail: msg="You haven't defined the necessary bits for DB config"
+  when: ARTIFACTORY_USE_EXTERNAL_DB and (DB_URL is undefined or DB_PASSWORD is undefined)
+
 - name: Download RPM
   get_url:
     url: 'https://bintray.com/jfrog/artifactory-rpms/rpm'
@@ -15,6 +19,9 @@
     owner: artifactory
     group: artifactory
     mode: 0770
+
+- include: db.yml
+  when: ARTIFACTORY_USE_EXTERNAL_DB
 
 - name: Configure artifactory service
   service: name=artifactory state=started enabled=true
