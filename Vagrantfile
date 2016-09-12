@@ -9,6 +9,7 @@ Vagrant.configure("2") do |config|
   #config.vm.box = "debian/jessie64"
 
   config.vm.network "forwarded_port", guest: 8153, host: 8153
+  config.vm.network "forwarded_port", guest: 8154, host: 8154
   config.vm.network "forwarded_port", guest: 8081, host: 8081
 
   #no dir sync needed
@@ -20,7 +21,7 @@ Vagrant.configure("2") do |config|
   
   config.vm.provision "ansible" do |ansible|
     ansible.host_key_checking = false
-    ansible.playbook = "cd-provisioner/site.yml"
+    ansible.playbook = "ansible/site.yml"
     ansible.groups = {
       "go-server" => ["default"],
       "go-agent" => ["default"],
@@ -28,6 +29,11 @@ Vagrant.configure("2") do |config|
       "artifactory" => ["default"]
     }
     ansible.verbose = ''
+    ansible.extra_vars = {
+       # ARTIFACTORY_USE_EXTERNAL_DB: true,
+       # DB_URL: "dummy",
+       # DB_PASSWORD: "dummy"
+    }
   end
 
 end
